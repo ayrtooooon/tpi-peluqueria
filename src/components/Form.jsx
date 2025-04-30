@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "react-bootstrap";
 
 const Form = ({ onSubmit, errores, refs, formEnviado }) => {
   const [formData, setFormData] = useState({
@@ -78,7 +79,7 @@ const Form = ({ onSubmit, errores, refs, formEnviado }) => {
         {errores.servicio && <p style={{ color: "red" }}>{errores.servicio}</p>}
       </div>
 
-      <button type="submit">Reservar turno</button>
+      <Button type="submit">Reservar turno</Button>
 
       {formEnviado && (
         <p style={{ color: "green" }}>Turno reservado con éxito</p>

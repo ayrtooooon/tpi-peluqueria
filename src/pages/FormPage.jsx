@@ -1,4 +1,4 @@
-import Form from "../components/Fom";
+import Form from "../components/Form";
 import Validations from "../components/Validations";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
