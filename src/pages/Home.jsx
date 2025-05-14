@@ -1,15 +1,85 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Button, Container, Row, Col, Card } from "react-bootstrap";
 
 const Home = () => {
   const navigate = useNavigate();
+
   return (
-    <div>
-      <h1>Home peluquería</h1>
-      <Button variant="primary" onClick={() => navigate("/formulario")}>
-        Registrarse
-      </Button>
-    </div>
+    <Container className="mt-5">
+      <div className="bg-light p-5 rounded-lg m-3 text-center">
+        <h1 className="display-4">Bienvenido a nuestra Peluquería</h1>
+        <p className="lead">
+          Servicios profesionales de belleza y cuidado capilar
+        </p>
+        <hr className="my-4" />
+        <p>Registrate para reservar tu cita ahora</p>
+
+        <Button
+          variant="primary"
+          size="lg"
+          onClick={() => navigate("/formulario")}
+          className="mt-3"
+        >
+          Registrarse
+        </Button>
+      </div>
+
+      <Row className="mt-5">
+        <Col md={4} className="mb-4">
+          <Card>
+            <Card.Img
+              variant="top"
+              src="https://via.placeholder.com/300x200?text=Cortes+de+Pelo"
+            />
+            <Card.Body>
+              <Card.Title>Cortes Modernos</Card.Title>
+              <Card.Text>Los últimos estilos en cortes de cabello.</Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col md={4} className="mb-4">
+          <Card>
+            <Card.Img
+              variant="top"
+              src="https://via.placeholder.com/300x200?text=Coloración"
+            />
+            <Card.Body>
+              <Card.Title>Coloración Profesional</Card.Title>
+              <Card.Text>
+                Técnicas avanzadas de coloración y tratamientos capilares.
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col md={4} className="mb-4">
+          <Card>
+            <Card.Img
+              variant="top"
+              src="https://via.placeholder.com/300x200?text=Tratamientos"
+            />
+            <Card.Body>
+              <Card.Title>Barba</Card.Title>
+              <Card.Text>Estilos mas modernos en cortes de barba.</Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      <div className="text-center mt-4 mb-5">
+        <Button
+          variant="outline-secondary"
+          onClick={() => navigate("/servicios")}
+          className="me-3"
+        >
+          Ver todos los servicios
+        </Button>
+        <Button variant="outline-primary" onClick={() => navigate("/contacto")}>
+          Contacto
+        </Button>
+      </div>
+    </Container>
   );
 };
 

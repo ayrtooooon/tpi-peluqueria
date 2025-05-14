@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 import FormPage from "./pages/FormPage";
 import Home from "./pages/Home";
 
