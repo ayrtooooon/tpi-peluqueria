@@ -5,7 +5,8 @@ const Home = () => {
   return (
     <div>
       <h1>Home peluquería</h1>
-      <button onClick={() => navigate("/formulario")}>Registrarse</button>
+      <button onClick={() => navigate("/formulario")}>Turnos</button>
+      <button onClick={() => navigate("/login")}>Registrarse</button>
     </div>
   );
 };
