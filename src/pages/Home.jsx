@@ -6,7 +6,7 @@ const Home = () => {
 
   return (
     <Container className="mt-5">
-      <div className="bg-light p-5 rounded-lg m-3 text-center">
+      <div className="bg-light p-5 rounded-lg m-3 text-center shadow">
         <h1 className="display-4">Bienvenido a nuestra Peluquería</h1>
         <p className="lead">
           Servicios profesionales de belleza y cuidado capilar
@@ -27,10 +27,7 @@ const Home = () => {
       <Row className="mt-5">
         <Col md={4} className="mb-4">
           <Card>
-            <Card.Img
-              variant="top"
-              src="https://via.placeholder.com/300x200?text=Cortes+de+Pelo"
-            />
+            <Card.Img variant="top" src="./cortepelo.jpg" />
             <Card.Body>
               <Card.Title>Cortes Modernos</Card.Title>
               <Card.Text>Los últimos estilos en cortes de cabello.</Card.Text>
@@ -40,10 +37,7 @@ const Home = () => {
 
         <Col md={4} className="mb-4">
           <Card>
-            <Card.Img
-              variant="top"
-              src="https://via.placeholder.com/300x200?text=Coloración"
-            />
+            <Card.Img variant="top" src="./coloracion.jpg" />
             <Card.Body>
               <Card.Title>Coloración Profesional</Card.Title>
               <Card.Text>
@@ -55,10 +49,7 @@ const Home = () => {
 
         <Col md={4} className="mb-4">
           <Card>
-            <Card.Img
-              variant="top"
-              src="https://via.placeholder.com/300x200?text=Tratamientos"
-            />
+            <Card.Img variant="top" src="./hombrebarba.jpg" />
             <Card.Body>
               <Card.Title>Barba</Card.Title>
               <Card.Text>Estilos mas modernos en cortes de barba.</Card.Text>
