@@ -1,4 +1,4 @@
-import Form from "../components/Fom";
+import FormularioReserva from "../components/ReservationForm";
 import Validations from "../components/Validations";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -39,8 +39,7 @@ function FormPage(setIsLoggedIn) {
 
   return (
     <div>
-      <h1>Reservar turno</h1>
-      <Form
+      <FormularioReserva
         onSubmit={manejarEnvio}
         errores={errores}
         refs={{
