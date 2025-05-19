@@ -25,4 +25,3 @@ export const successToast = (message, config) => {
         ...config
     })
 }
-

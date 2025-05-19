@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Button, Card, Col, Form, FormGroup, Row } from "react-bootstrap";
 import { useNavigate } from "react-router";
-import { successToast, errorToast } from "../components/toast/NotificationToast";
+import { successToast, errorToast } from "../components/ui/toast/NotificationToast";
 
 
 const Login = ({ setIsLogged }) => {
