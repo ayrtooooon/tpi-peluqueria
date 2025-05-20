@@ -64,7 +64,7 @@ const Register = () => {
     }
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="d-flex justify-content-center align-items-start w-100" style={{ paddingTop: "150px", minHeight: "100vh" }}>
             <Card className="p-4 shadow" style={{ minWidth: "400px" }}>
                 <Card.Body>
                     <Row className="mb-3">
