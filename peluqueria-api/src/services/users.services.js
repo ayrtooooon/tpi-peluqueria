@@ -19,7 +19,7 @@ export const findUserById = async (req, res) => {
 export const CreateUser = async (req, res) => {
   const { name, email, password, role } = req.body;
 
-  if (!name || !email || !password || !role) {
+  if (!name || !email || !password) {
     return res.status(400).send({ message: "All fields are required" });
   }
 
