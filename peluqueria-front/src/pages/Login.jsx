@@ -33,6 +33,8 @@ const Login = ({ setIsLogged }) => {
             setErrors({ ...errors, password: true });
             passwordRef.current.focus();
             return;
+        } else {
+            setTimeout(() => navigate("/turnos"), 2000);
         }
 
         fetch("http://localhost:3000/login", {

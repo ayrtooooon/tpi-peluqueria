@@ -9,6 +9,7 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [errors, setErrors] = useState({ email: false, password: false });
+    const [formEnviado, setFormEnviado] = useState(false);
     const navigate = useNavigate();
 
     const handleEmailChange = (event) => {
@@ -34,6 +35,8 @@ const Register = () => {
         if (!password) {
             setErrors({ ...errors, password: true });
             return;
+        } else {
+            setTimeout(() => navigate("/login"), 1000);
         }
 
         const newUser = {
