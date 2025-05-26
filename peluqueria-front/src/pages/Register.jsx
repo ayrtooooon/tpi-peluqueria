@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from "react";
 import { Button, Card, Col, Form, FormGroup, Row } from "react-bootstrap";
 import { useNavigate } from "react-router";
-import { errorToast, successToast } from '../components/ui/toast/NotificationToast';
+import { errorToast, successToast } from '../components/ui/toast//NotificationToast';
 
 const Register = () => {
     const [email, setEmail] = useState("");
