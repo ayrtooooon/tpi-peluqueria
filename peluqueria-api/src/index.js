@@ -3,13 +3,14 @@ import express from "express";
 import { PORT } from "./config.js";
 import { sequelize } from "./db.js";
 
-import "./models/Users.js";
+import "./models/users.js";
 
-import peluqueriaRoutes from "./routes/peluqueria.routes.js";
+import peluqueriaRoutes from "./routes/users.routes.js";
 
 const app = express();
 
 try {
+  app.use(express.json());
   app.listen(PORT);
   app.use(peluqueriaRoutes);
 
