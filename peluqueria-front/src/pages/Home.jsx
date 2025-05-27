@@ -17,7 +17,7 @@ const Home = () => {
         <Button
           variant="primary"
           size="lg"
-          onClick={() => navigate("/formulario")}
+          onClick={() => navigate("/login")}
           className="mt-3"
         >
           Registrarse
