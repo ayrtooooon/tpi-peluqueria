@@ -6,8 +6,9 @@ import FormPage from "./pages/FormPage";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Footer from "./components/Footer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [isLogged, setIsLogged] = useState(false);
@@ -22,6 +23,7 @@ function App() {
         <Route path="/register" element={<Register></Register>} />
       </Routes>
       <ToastContainer />
+      <Footer />
     </BrowserRouter>
   );
 }

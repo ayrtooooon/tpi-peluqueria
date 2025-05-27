@@ -7,13 +7,13 @@ function NavBar() {
       <Container>
         <Navbar.Brand as={Link} to="/">
           <img
-            alt=""
+            alt="logo"
             src="./scissors.svg"
             width="30"
             height="30"
             className="d-inline-block align-top"
           />{" "}
-          Peluqueria
+          Peluquería
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -21,7 +21,12 @@ function NavBar() {
             <Nav.Link as={Link} to="/">
               Home
             </Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
+            <Nav.Link as={Link} to="/servicios">
+              Servicios
+            </Nav.Link>
+            <Nav.Link as={Link} to="/contacto">
+              Contacto
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
