@@ -3,3 +3,11 @@ export const UserRoles = {
   BARBER: "barber",
   ADMIN: "admin",
 };
+
+export const AppointmentServices = [
+  "Corte",
+  "Corte y barba",
+  "Peinado",
+  "Coloracion",
+  "Barba",
+];
