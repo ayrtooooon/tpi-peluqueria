@@ -21,6 +21,20 @@ const ReservationForm = ({ onSubmit, errores, refs, formEnviado }) => {
     onSubmit(formData);
   };
 
+  const generarOpcionesHora = () => {
+    const opciones = [];
+    for (let hora = 8; hora <= 20; hora++) {
+      const horaStr = hora.toString().padStart(2, "0");
+      opciones.push(`${horaStr}:00`);
+      opciones.push(`${horaStr}:30`);
+    }
+    return opciones.map((hora, idx) => (
+      <option key={idx} value={hora}>
+        {hora}
+      </option>
+    ));
+  };
+
   return (
     <Card className="mt-5 mx-md-5 p-4 shadow">
       <Card.Header as="h2" className="bg-primary text-white">
@@ -60,6 +74,13 @@ const ReservationForm = ({ onSubmit, errores, refs, formEnviado }) => {
                 onChange={handleChange}
                 ref={refs.fechaRef}
                 isInvalid={!!errores.fecha}
+                min={new Date().toISOString().split("T")[0]}
+                max={(() => {
+                  const hoy = new Date();
+                  const maxFecha = new Date(hoy);
+                  maxFecha.setMonth(hoy.getMonth() + 1);
+                  return maxFecha.toISOString().split("T")[0]; // fecha máxima = hoy + 1 mes
+                })()}
               />
               <Form.Control.Feedback type="invalid">
                 {errores.fecha}
@@ -72,14 +93,16 @@ const ReservationForm = ({ onSubmit, errores, refs, formEnviado }) => {
               Hora:
             </Form.Label>
             <Col sm={9}>
-              <Form.Control
-                type="time"
+              <Form.Select
                 name="hora"
                 value={formData.hora}
                 onChange={handleChange}
                 ref={refs.horaRef}
                 isInvalid={!!errores.hora}
-              />
+              >
+                <option value="">-- Seleccionar hora --</option>
+                {generarOpcionesHora()}
+                </Form.Select>
               <Form.Control.Feedback type="invalid">
                 {errores.hora}
               </Form.Control.Feedback>
