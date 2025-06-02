@@ -3,15 +3,19 @@ import express from "express";
 import { PORT } from "./config.js";
 import { sequelize } from "./db.js";
 
-import "./models/Users.js";
+import "./models/users.js";
+import "./models/appointments.js";
 
-import peluqueriaRoutes from "./routes/peluqueria.routes.js";
+import peluqueriaRoutes from "./routes/users.routes.js";
+import appointmentRoutes from "./routes/appointments.routes.js";
 
 const app = express();
 
 try {
+  app.use(express.json());
   app.listen(PORT);
   app.use(peluqueriaRoutes);
+  app.use(appointmentRoutes);
 
   await sequelize.sync();
 
