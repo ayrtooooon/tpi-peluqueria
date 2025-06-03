@@ -28,6 +28,17 @@ function NavBar() {
               Contacto
             </Nav.Link>
           </Nav>
+          <Nav>
+            <Link to="/turnos" className="text-decoration-none me-3 text-dark">
+              Turnos
+            </Link>
+            <Link to="/login" className="text-decoration-none me-3 text-dark">
+              Iniciar sesión
+            </Link>
+            <Link to="/register" className="text-decoration-none text-dark">
+              Registrarse
+            </Link>
+          </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>

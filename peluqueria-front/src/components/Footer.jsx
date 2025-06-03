@@ -15,15 +15,6 @@ function Footer() {
             <Link to="/" className="text-decoration-none me-3 text-dark">
               Inicio
             </Link>
-            <Link to="/turnos" className="text-decoration-none me-3 text-dark">
-              Turnos
-            </Link>
-            <Link to="/login" className="text-decoration-none me-3 text-dark">
-              Iniciar sesión
-            </Link>
-            <Link to="/register" className="text-decoration-none text-dark">
-              Registrarse
-            </Link>
           </Col>
         </Row>
       </Container>

@@ -12,7 +12,7 @@ const Home = () => {
           Servicios profesionales de belleza y cuidado capilar
         </p>
         <hr className="my-4" />
-        <p>Registrate para reservar tu cita ahora</p>
+        <p>Ingresa para reservar tu cita ahora</p>
 
         <Button
           variant="primary"
@@ -20,7 +20,7 @@ const Home = () => {
           onClick={() => navigate("/login")}
           className="mt-3"
         >
-          Registrarse
+          Ingresar
         </Button>
       </div>
 
