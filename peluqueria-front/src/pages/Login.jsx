@@ -27,40 +27,35 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     if (!emailRef.current.value) {
       setErrors({ ...errors, email: true });
       emailRef.current.focus();
       return;
     }
-
     if (!passwordRef.current.value) {
       setErrors({ ...errors, password: true });
       passwordRef.current.focus();
       return;
     }
-
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-
     try {
-      const res = await fetch("http://localhost:3000/users", {
+      const res = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-
       if (!res.ok) {
-        throw new Error("Credenciales incorrectas");
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Error al iniciar sesión");
       }
 
-      const userData = await res.json(); 
-      handleUserLogin(userData); 
+      const userData = await res.json();
+      handleUserLogin(userData);
       successToast("Inicio de sesión exitoso.");
       navigate("/turnos");
-
     } catch (err) {
-      errorToast("Error al iniciar sesión.");
+      errorToast(err.message);
     }
   };
 
@@ -124,4 +119,3 @@ const Login = () => {
 };
 
 export default Login;
-

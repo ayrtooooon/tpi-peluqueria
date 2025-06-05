@@ -4,13 +4,14 @@ import { useNavigate } from "react-router";
 import {
   errorToast,
   successToast,
-} from "../components/ui/toast/NotificationToast"; 
+} from "../components/ui/toast//NotificationToast";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [errors, setErrors] = useState({ email: false, password: false });
+  const [formEnviado, setFormEnviado] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
@@ -27,42 +28,34 @@ const Register = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     if (!email) {
       setErrors({ ...errors, email: true });
       return;
     }
-
     if (!password) {
       setErrors({ ...errors, password: true });
       return;
     }
-
     const newUser = {
       name,
       email,
       password,
     };
-
     try {
-      const res = await fetch("http://localhost:3000/users", {
+      const res = await fetch("http://localhost:3000/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newUser),
       });
-
       const data = await res.json();
-
       if (!res.ok) {
         const message = data?.message || "Error al registrar usuario.";
         errorToast(message);
-        return; 
+        return;
       }
-
       successToast(
         "Usuario registrado exitosamente. Inicie sesión para continuar."
       );
-
       setTimeout(() => navigate("/login"), 1500);
     } catch (err) {
       errorToast("Error al registrar usuario.");
@@ -123,4 +116,3 @@ const Register = () => {
 };
 
 export default Register;
-
