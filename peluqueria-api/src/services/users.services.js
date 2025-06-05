@@ -82,3 +82,32 @@ export const assignBarberRole = async (req, res) => {
     res.status(500).send({ message: "Error al actualizar el rol" });
   }
 };
+
+export const revertToCustomerRole = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findByPk(id);
+
+    if (!user) {
+      return res.status(404).send({ message: "Usuario no encontrado" });
+    }
+
+    if (user.role === "Admin") {
+      return res
+        .status(403)
+        .json({ message: "No se puede modificar a otros admins." });
+    }
+
+    if (user.role === "Customer") {
+      return res.status(403).json({ message: "El usuario ya es un cliente" });
+    }
+
+    user.role = "Customer";
+    await user.save();
+
+    res.json({ message: "Rol actualizado a customer", user });
+  } catch (err) {
+    res.status(500).send({ message: "Error al actualizar el rol" });
+  }
+};

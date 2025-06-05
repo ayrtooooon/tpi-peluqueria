@@ -41,6 +41,29 @@ const ManageUsers = () => {
     }
   };
 
+  const handleRevertToCustomer = async (userId) => {
+    try {
+      const res = await fetch(
+        `http://localhost:3000/users/${userId}/customer`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ role: "customer" }),
+        }
+      );
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Error al revertir el rol");
+      }
+
+      successToast("Rol revertido correctamente.");
+      fetchUsers(); // Refresh the list
+    } catch (err) {
+      errorToast(err.message || "Hubo un problema.");
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -66,17 +89,21 @@ const ManageUsers = () => {
               <td>{user.email}</td>
               <td>{user.role}</td>
               <td>
-                {user.role !== "barber" ? (
-                  <Button
-                    variant="success"
-                    size="sm"
-                    onClick={() => handleMakeBarber(user.user_id)}
-                  >
-                    Asignar rol barber
-                  </Button>
-                ) : (
-                  <span className="text-muted">Ya es barber</span>
-                )}
+                <Button
+                  variant="success"
+                  size="sm"
+                  onClick={() => handleMakeBarber(user.user_id)}
+                >
+                  Asignar rol barber
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  className="ms-2"
+                  onClick={() => handleRevertToCustomer(user.user_id)}
+                >
+                  Revertir a cliente
+                </Button>
               </td>
             </tr>
           ))}

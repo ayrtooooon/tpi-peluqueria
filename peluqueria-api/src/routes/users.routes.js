@@ -6,6 +6,7 @@ import {
   UpdateUser,
   DeleteUser,
   assignBarberRole,
+  revertToCustomerRole,
 } from "../services/users.services.js";
 
 const router = Router();
@@ -16,5 +17,6 @@ router.post("/users", CreateUser);
 router.put("/users/:id", UpdateUser);
 router.delete("/users/:id", DeleteUser);
 router.put("/users/:id/barber", assignBarberRole);
+router.put("/users/:id/customer", revertToCustomerRole);
 
 export default router;

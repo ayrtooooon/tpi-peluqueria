@@ -110,7 +110,7 @@ const validateRegisterUser = (req) => {
   if (!name || !validateString(name, null, 13))
     return {
       error: true,
-      message: "Nombre de usuario inválido",
+      message: "El nombre de usuario debe tener menos de 13 caracteres",
     };
 
   if (!email || !validateEmail(email))
@@ -121,7 +121,8 @@ const validateRegisterUser = (req) => {
   else if (!password || !validatePassword(password, 7, null, true, true)) {
     return {
       error: true,
-      message: "Contraseña inválida",
+      message:
+        "La contraseña debe tener al menos 7 caracteres, una mayúscula y un número",
     };
   }
 
