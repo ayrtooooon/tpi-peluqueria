@@ -37,8 +37,6 @@ const Register = () => {
     if (!password) {
       setErrors({ ...errors, password: true });
       return;
-    } else {
-      setTimeout(() => navigate("/login"), 1000);
     }
 
     const newUser = {
@@ -54,11 +52,12 @@ const Register = () => {
         body: JSON.stringify(newUser),
       });
 
-      if (!res.ok) {
-        errorToast("Error al registrar usuario.");
-      }
+      const data = await res.json();
 
-      await res.json();
+      if (!res.ok) {
+        const message = data?.message || "Error al registrar usuario.";
+        errorToast(message);
+      }
 
       successToast(
         "Usuario registrado exitosamente. Inicie sesión para continuar."

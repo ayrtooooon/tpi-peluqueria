@@ -25,7 +25,7 @@ const Login = () => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!emailRef.current.value) {
@@ -38,25 +38,32 @@ const Login = () => {
       setErrors({ ...errors, password: true });
       passwordRef.current.focus();
       return;
-    } else {
     }
 
-    fetch("http://localhost:3000/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((res) => res.json())
-      .then((token) => {
-        handleUserLogin(token);
-        successToast("Inicio de sesión exitoso.");
-        navigate("/turnos");
-      })
-      .catch((err) => {
-        errorToast("Error al iniciar sesión.");
-        return;
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+
+    try {
+      const res = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
+
+      if (!res.ok) {
+        throw new Error("Credenciales incorrectas");
+      }
+      
+      const token = await res.json();
+      handleUserLogin(token);
+      successToast("Inicio de sesión exitoso.");
+      navigate("/turnos");
+
+    } catch (err) {
+      errorToast("Error al iniciar sesión.");
+    }
   };
+
 
   const handleNavigateToRegister = () => {
     navigate("/register");
