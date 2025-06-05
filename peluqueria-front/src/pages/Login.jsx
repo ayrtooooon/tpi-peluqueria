@@ -25,37 +25,38 @@ const Login = () => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
     if (!emailRef.current.value) {
       setErrors({ ...errors, email: true });
       emailRef.current.focus();
       return;
     }
-
     if (!passwordRef.current.value) {
       setErrors({ ...errors, password: true });
       passwordRef.current.focus();
       return;
-    } else {
     }
-
-    fetch("http://localhost:3000/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((res) => res.json())
-      .then((token) => {
-        handleUserLogin(token);
-        successToast("Inicio de sesión exitoso.");
-        navigate("/turnos");
-      })
-      .catch((err) => {
-        errorToast("Error al iniciar sesión.");
-        return;
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    try {
+      const res = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Error al iniciar sesión");
+      }
+
+      const userData = await res.json();
+      handleUserLogin(userData);
+      successToast("Inicio de sesión exitoso.");
+      navigate("/turnos");
+    } catch (err) {
+      errorToast(err.message);
+    }
   };
 
   const handleNavigateToRegister = () => {

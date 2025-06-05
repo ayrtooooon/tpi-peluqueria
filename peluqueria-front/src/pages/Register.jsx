@@ -28,42 +28,34 @@ const Register = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     if (!email) {
       setErrors({ ...errors, email: true });
       return;
     }
-
     if (!password) {
       setErrors({ ...errors, password: true });
       return;
-    } else {
-      setTimeout(() => navigate("/login"), 1000);
     }
-
     const newUser = {
       name,
       email,
       password,
     };
-
     try {
-      const res = await fetch("http://localhost:3000/users", {
+      const res = await fetch("http://localhost:3000/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newUser),
       });
-
+      const data = await res.json();
       if (!res.ok) {
-        errorToast("Error al registrar usuario.");
+        const message = data?.message || "Error al registrar usuario.";
+        errorToast(message);
+        return;
       }
-
-      await res.json();
-
       successToast(
         "Usuario registrado exitosamente. Inicie sesión para continuar."
       );
-
       setTimeout(() => navigate("/login"), 1500);
     } catch (err) {
       errorToast("Error al registrar usuario.");

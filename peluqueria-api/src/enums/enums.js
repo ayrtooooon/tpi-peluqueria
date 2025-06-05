@@ -11,3 +11,10 @@ export const AppointmentServices = [
   "Coloracion",
   "Barba",
 ];
+
+export const AppointmentStatuses = [
+  "Pendiente",
+  "Asignado",
+  "Cancelado",
+  "Terminado",
+];

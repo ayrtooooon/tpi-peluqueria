@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db.js";
 import { AppointmentServices } from "../enums/enums.js";
+import { AppointmentStatuses } from "../enums/enums.js";
 
 export const Appointment = sequelize.define(
   "Appointment",
@@ -17,6 +18,11 @@ export const Appointment = sequelize.define(
     appointment_time: {
       type: DataTypes.TIME,
       allowNull: false,
+    },
+    status: {
+      type: DataTypes.ENUM(...AppointmentStatuses),
+      allowNull: false,
+      defaultValue: "Pendiente",
     },
     service: {
       type: DataTypes.ENUM(...AppointmentServices),
