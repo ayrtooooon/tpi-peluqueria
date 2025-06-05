@@ -53,9 +53,9 @@ const Login = () => {
       if (!res.ok) {
         throw new Error("Credenciales incorrectas");
       }
-      
-      const token = await res.json();
-      handleUserLogin(token);
+
+      const userData = await res.json(); 
+      handleUserLogin(userData); 
       successToast("Inicio de sesión exitoso.");
       navigate("/turnos");
 
@@ -63,7 +63,6 @@ const Login = () => {
       errorToast("Error al iniciar sesión.");
     }
   };
-
 
   const handleNavigateToRegister = () => {
     navigate("/register");
@@ -125,3 +124,4 @@ const Login = () => {
 };
 
 export default Login;
+

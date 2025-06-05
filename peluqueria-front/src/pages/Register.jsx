@@ -4,14 +4,13 @@ import { useNavigate } from "react-router";
 import {
   errorToast,
   successToast,
-} from "../components/ui/toast//NotificationToast";
+} from "../components/ui/toast/NotificationToast"; 
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [errors, setErrors] = useState({ email: false, password: false });
-  const [formEnviado, setFormEnviado] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
@@ -57,6 +56,7 @@ const Register = () => {
       if (!res.ok) {
         const message = data?.message || "Error al registrar usuario.";
         errorToast(message);
+        return; 
       }
 
       successToast(
@@ -123,3 +123,4 @@ const Register = () => {
 };
 
 export default Register;
+
