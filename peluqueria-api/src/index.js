@@ -23,7 +23,7 @@ try {
   app.use(peluqueriaRoutes);
   app.use(appointmentRoutes);
 
-  await sequelize.sync({ alter: true });
+  await sequelize.sync();
 
   console.log(`Server listening on port ${PORT}`);
 } catch (error) {
