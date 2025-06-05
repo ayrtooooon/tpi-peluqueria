@@ -1,4 +1,5 @@
 import { User } from "../models/users.js";
+import { Op } from "sequelize";
 
 export const findUsers = async (req, res) => {
   const users = await User.findAll();
@@ -51,4 +52,33 @@ export const DeleteUser = async (req, res) => {
 
   await user.destroy();
   res.send({ message: "User deleted" });
+};
+
+export const assignBarberRole = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findByPk(id);
+
+    if (!user) {
+      return res.status(404).send({ message: "Usuario no encontrado" });
+    }
+
+    if (user.role === "Admin") {
+      return res
+        .status(403)
+        .json({ message: "No se puede modificar a otros admins." });
+    }
+
+    if (user.role === "Barber") {
+      return res.status(403).json({ message: "El usuario ya es un barbero" });
+    }
+
+    user.role = "Barber";
+    await user.save();
+
+    res.json({ message: "Rol actualizado a barber", user });
+  } catch (err) {
+    res.status(500).send({ message: "Error al actualizar el rol" });
+  }
 };

@@ -1,8 +1,4 @@
-export const UserRoles = {
-  CUSTOMER: "customer",
-  BARBER: "barber",
-  ADMIN: "admin",
-};
+export const UserRoles = ["Customer", "Barber", "Admin"];
 
 export const AppointmentServices = [
   "Corte",
