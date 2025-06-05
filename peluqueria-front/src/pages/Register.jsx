@@ -4,14 +4,13 @@ import { useNavigate } from "react-router";
 import {
   errorToast,
   successToast,
-} from "../components/ui/toast//NotificationToast";
+} from "../components/ui/toast/NotificationToast"; 
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [errors, setErrors] = useState({ email: false, password: false });
-  const [formEnviado, setFormEnviado] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
@@ -37,8 +36,6 @@ const Register = () => {
     if (!password) {
       setErrors({ ...errors, password: true });
       return;
-    } else {
-      setTimeout(() => navigate("/login"), 1000);
     }
 
     const newUser = {
@@ -54,11 +51,13 @@ const Register = () => {
         body: JSON.stringify(newUser),
       });
 
-      if (!res.ok) {
-        errorToast("Error al registrar usuario.");
-      }
+      const data = await res.json();
 
-      await res.json();
+      if (!res.ok) {
+        const message = data?.message || "Error al registrar usuario.";
+        errorToast(message);
+        return; 
+      }
 
       successToast(
         "Usuario registrado exitosamente. Inicie sesión para continuar."
@@ -124,3 +123,4 @@ const Register = () => {
 };
 
 export default Register;
+

@@ -1,24 +1,23 @@
 import { useState } from "react";
 import { AuthenticationContext } from "./auth.context";
 
-const TokenValue = localStorage.getItem("token");
-
 export const AuthenticationContextProvider = ({ children }) => {
-  const [token, setToken] = useState(TokenValue);
+  const [user, setUser] = useState(null); 
 
-  const handleUserLogin = (token) => {
-    localStorage.setItem("token", token);
-    setToken(token);
+  const handleUserLogin = (userData) => {
+    setUser(userData);
   };
 
   const handleUserLogout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
+    setUser(null);
   };
 
+  const isLoggedIn = !!user;
+
   return (
-    <AuthenticationContext value={{ token, handleUserLogin, handleUserLogout }}>
+    <AuthenticationContext.Provider value={{ user, isLoggedIn, handleUserLogin, handleUserLogout }}>
       {children}
-    </AuthenticationContext>
+    </AuthenticationContext.Provider>
   );
 };
+

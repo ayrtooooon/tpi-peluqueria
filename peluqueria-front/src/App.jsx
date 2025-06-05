@@ -18,7 +18,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/turnos" element={<FormPage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register></Register>} />
+        <Route path="/register" element={<Register />} />
       </Routes>
       <ToastContainer />
       <Footer />
