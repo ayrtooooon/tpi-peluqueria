@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import Footer from "./components/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AdminView from "./pages/AdminView";
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/turnos" element={<FormPage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/register" element={<Register></Register>} />
+        <Route path="/admin" element={<AdminView />} />
         <Route path="/barbersView" element={<BarberView />} />
       </Routes>
       </main>
