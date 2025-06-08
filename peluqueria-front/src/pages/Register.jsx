@@ -77,7 +77,7 @@ const Register = () => {
               <Form.Control
                 type="text"
                 required
-                placeholder="Ingresar nombre de usuario"
+                placeholder="Ingrese su nombre y apellido"
                 onChange={handleNameChange}
                 value={name}
               />

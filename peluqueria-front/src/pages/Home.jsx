@@ -1,27 +1,79 @@
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Row, Col, Card } from "react-bootstrap";
+import { useContext } from "react";
+import { AuthenticationContext } from "../components/services/auth.context";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { isLoggedIn, user } = useContext(AuthenticationContext);
+
+  const renderBotonPorRol = () => {
+    if (!user) return null;
+
+    switch (user.role) {
+      case "Customer":
+        return (
+          <Button
+            variant="success"
+            size="lg"
+            onClick={() => navigate("/turnos")}
+          >
+            Sacar turno
+          </Button>
+        );
+      case "Admin":
+        return (
+          <Button
+            variant="warning"
+            size="lg"
+            onClick={() => navigate("/admin")}
+          >
+            Ir a panel de administración
+          </Button>
+        );
+      case "Barber":
+        return (
+          <Button
+            variant="info"
+            size="lg"
+            onClick={() => navigate("/barbersView")}
+          >
+            Ver turnos
+          </Button>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <Container className="mt-5">
       <div className="bg-light p-5 rounded-lg m-3 text-center shadow">
-        <h1 className="display-4">Bienvenido a nuestra Peluquería</h1>
-        <p className="lead">
-          Servicios profesionales de belleza y cuidado capilar
-        </p>
-        <hr className="my-4" />
-        <p>Ingresa para reservar tu cita ahora</p>
-
-        <Button
-          variant="primary"
-          size="lg"
-          onClick={() => navigate("/login")}
-          className="mt-3"
-        >
-          Ingresar
-        </Button>
+        {!isLoggedIn ? (
+          <>
+            <h1 className="display-4">Bienvenido a nuestra Peluquería</h1>
+            <p className="lead">
+              Servicios profesionales de belleza y cuidado capilar
+            </p>
+            <hr className="my-4" />
+            <p>Ingresa para reservar tu cita ahora</p>
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={() => navigate("/login")}
+              className="mt-3"
+            >
+              Ingresar
+            </Button>
+          </>
+        ) : (
+          <>
+            <h2 className="display-5 mb-4">
+              ¡Hola, {user.name}! ¿Qué querés hacer hoy?
+            </h2>
+            {renderBotonPorRol()}
+          </>
+        )}
       </div>
 
       <Row className="mt-5">
@@ -52,7 +104,7 @@ const Home = () => {
             <Card.Img variant="top" src="./hombrebarba.jpg" />
             <Card.Body>
               <Card.Title>Barba</Card.Title>
-              <Card.Text>Estilos mas modernos en cortes de barba.</Card.Text>
+              <Card.Text>Estilos más modernos en cortes de barba.</Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -61,12 +113,12 @@ const Home = () => {
       <div className="text-center mt-4 mb-5">
         <Button
           variant="outline-secondary"
-          onClick={() => navigate("/servicios")}
+          onClick={() => navigate("/services")}
           className="me-3"
         >
           Ver todos los servicios
         </Button>
-        <Button variant="outline-primary" onClick={() => navigate("/contacto")}>
+        <Button variant="outline-primary" onClick={() => navigate("/contact")}>
           Contacto
         </Button>
       </div>
