@@ -6,6 +6,7 @@ import {
   updateAppointment,
   deleteAppointment,
   assignAppoinment,
+  cancelAppointment,
 } from "../services/appointments.services.js";
 
 const router = Router();
@@ -22,5 +23,6 @@ router.post("/appointments", createAppointment);
 router.put("/appointments/:id", updateAppointment);
 router.delete("/appointments/:id", deleteAppointment);
 router.put("/appointments/:id/assign", assignAppoinment);
+router.put("/appointments/:id/cancel", cancelAppointment);
 
 export default router;

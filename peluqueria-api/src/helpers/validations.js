@@ -1,3 +1,5 @@
+import { Appointment } from "../models/appointments.js";
+
 export const validateString = (str, minLength, maxLength) => {
   if (minLength && str.length < minLength) return false;
   else if (maxLength && str.length > maxLength) return false;
@@ -23,4 +25,18 @@ export const validatePassword = (
   else if (needsNumber && !/\d/.test(password)) return false;
 
   return true;
+};
+
+export const hasConflictingAppointment = async (barber_id, date, time) => {
+  if (!barber_id || !date || !time) return false;
+
+  const conflictingAppointment = await Appointment.findOne({
+    where: {
+      barber_id,
+      appointment_date: date,
+      appointment_time: time,
+    },
+  });
+
+  return !!conflictingAppointment; // Devuelve true si existe
 };

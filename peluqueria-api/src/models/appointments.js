@@ -36,6 +36,10 @@ export const Appointment = sequelize.define(
         key: "user_id",
       },
     },
+    customer_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     barber_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
