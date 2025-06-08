@@ -45,6 +45,19 @@ const CostumerView = () => {
       errorToast("No se pudo identificar al cliente.");
       return;
     }
+
+    if (isPastDate(form.appointment_date)) {
+      errorToast("No podés reservar para días pasados.");
+      return;
+    }
+    if (isClosedDay(form.appointment_date)) {
+      errorToast("La peluquería está cerrada los domingos.");
+      return;
+    }
+    if (!isValidHour(form.appointment_time)) {
+      errorToast("El horario debe ser entre 10:00 y 19:00.");
+      return;
+    }
     try {
       const res = await fetch("http://localhost:3000/appointments", {
         method: "POST",
@@ -155,5 +168,24 @@ const CostumerView = () => {
     </Container>
   );
 };
+
+// --- Funciones de validación auxiliares ---
+function isPastDate(dateStr) {
+  const hoy = new Date();
+  const fecha = new Date(dateStr);
+  hoy.setHours(0, 0, 0, 0);
+  fecha.setHours(0, 0, 0, 0);
+  return fecha < hoy;
+}
+
+function isClosedDay(dateStr) {
+  const fecha = new Date(dateStr);
+  return fecha.getDay() === 0; // Domingo
+}
+
+function isValidHour(timeStr) {
+  const [hora, minutos] = timeStr.split(":").map(Number);
+  return hora >= 10 && (hora < 19 || (hora === 19 && minutos === 0));
+}
 
 export default CostumerView;

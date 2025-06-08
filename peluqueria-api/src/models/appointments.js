@@ -2,6 +2,7 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "../db.js";
 import { AppointmentServices } from "../enums/enums.js";
 import { AppointmentStatuses } from "../enums/enums.js";
+import { User } from "./Users.js";
 
 export const Appointment = sequelize.define(
   "Appointment",
@@ -62,4 +63,6 @@ Appointment.associate = (models) => {
     foreignKey: "barber_id",
     as: "barber",
   });
+
+  Appointment.belongsTo(User, { as: "customer", foreignKey: "customer_id" });
 };

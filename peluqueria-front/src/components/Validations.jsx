@@ -22,4 +22,23 @@ const Validations = ({ datos }) => {
   return errores;
 };
 
+function isPastDate(dateStr) {
+  const hoy = new Date();
+  const fecha = new Date(dateStr);
+  hoy.setHours(0, 0, 0, 0);
+  fecha.setHours(0, 0, 0, 0);
+  return fecha < hoy;
+}
+
+function isClosedDay(dateStr) {
+  const fecha = new Date(dateStr);
+  const dia = fecha.getDay(); // 0=Domingo
+  return dia === 0;
+}
+
+function isValidHour(timeStr) {
+  const [hora, minutos] = timeStr.split(":").map(Number);
+  return hora >= 10 && (hora < 19 || (hora === 19 && minutos === 0));
+}
+
 export default Validations;

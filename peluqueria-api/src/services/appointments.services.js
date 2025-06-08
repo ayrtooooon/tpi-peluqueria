@@ -1,7 +1,20 @@
 import { Appointment } from "../models/appointments.js";
 
 export const findAppointments = async (req, res) => {
-  const appointments = await Appointment.findAll();
+  const where = {};
+  if (req.query.unassigned === "true") {
+    where.barber_id = null;
+  }
+  const appointments = await Appointment.findAll({
+    where,
+    include: [
+      {
+        model: User,
+        as: "customer",
+        attributes: ["name"],
+      },
+    ],
+  });
   res.json(appointments);
 };
 
