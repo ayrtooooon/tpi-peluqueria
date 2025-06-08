@@ -51,7 +51,7 @@ const Login = () => {
       }
 
       const userData = await res.json();
-      localStorage.setItem("user_id", userData.customer_id);
+      localStorage.setItem("user_id", userData.user_id);
       handleUserLogin(userData);
       console.log(userData);
       successToast("Inicio de sesión exitoso.");

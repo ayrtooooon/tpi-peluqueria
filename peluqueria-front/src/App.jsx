@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AdminView from "./pages/AdminView";
+import CustomerView from "./pages/CustomerView";
 import AdminRoute from "./components/routes/AdminRoute";
 import Services from "./pages/Services";
 import Contact from "./pages/Contact";
@@ -30,7 +31,7 @@ function App() {
             <Route path="/register" element={<Register></Register>} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/services" element={<Services />}></Route>
-            <Route path="/turnos" element={<FormPage />} />
+            <Route path="/appointments" element={<CustomerView />} />
             <Route
               path="/profile"
               element={

@@ -17,27 +17,37 @@ export const findAppointmentById = async (req, res) => {
 };
 
 export const createAppointment = async (req, res) => {
-  const {
-    appointment_date,
-    appointment_time,
-    service,
-    customer_id,
-    barber_id,
-  } = req.body;
+  try {
+    const {
+      appointment_date,
+      appointment_time,
+      service,
+      customer_id,
+      barber_id,
+    } = req.body;
 
-  if (!appointment_date || !appointment_time || !service) {
-    return res.status(400).send({ message: "All fields are required" });
+    // Log para depuración
+    console.log("Datos recibidos:", req.body);
+
+    if (!appointment_date || !appointment_time || !service) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const newAppointment = await Appointment.create({
+      appointment_date,
+      appointment_time,
+      service,
+      customer_id,
+      barber_id,
+    });
+
+    res.json(newAppointment);
+  } catch (error) {
+    console.error("Error al crear turno:", error);
+    res
+      .status(500)
+      .json({ message: error.message || "Error interno del servidor" });
   }
-
-  const newAppointment = await Appointment.create({
-    appointment_date,
-    appointment_time,
-    service,
-    customer_id,
-    barber_id,
-  });
-
-  res.json(newAppointment);
 };
 
 export const updateAppointment = async (req, res) => {
