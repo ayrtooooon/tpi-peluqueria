@@ -1,10 +1,21 @@
 import { useContext } from "react";
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "./services/auth.context";
+import { successToast } from "./ui/toast/NotificationToast";
 
 function NavBar() {
-  const { user, isLoggedIn } = useContext(AuthenticationContext);
+  const { user, isLoggedIn, handleUserLogout } = useContext(
+    AuthenticationContext
+  );
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    handleUserLogout();
+    successToast("Cierre de sesión exitoso.");
+    navigate("/");
+  };
 
   return (
     <Navbar bg="light" data-bs-theme="light" expand="lg">
@@ -47,11 +58,11 @@ function NavBar() {
               </>
             ) : (
               <NavDropdown title={user?.name} id="user-dropdown">
-                <NavDropdown.Item as={Link} to="/perfil">
+                <NavDropdown.Item as={Link} to="/profile">
                   Mi perfil
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item as={Link} to="/logout">
+                <NavDropdown.Item onClick={handleLogout}>
                   Cerrar sesión
                 </NavDropdown.Item>
               </NavDropdown>

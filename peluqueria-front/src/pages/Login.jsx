@@ -54,6 +54,7 @@ const Login = () => {
       handleUserLogin(userData);
       successToast("Inicio de sesión exitoso.");
       console.log(userData.role);
+      console.log(userData.id);
       if (userData.role === "Admin") {
         navigate("/admin");
       } else if (userData.role === "Barber") {

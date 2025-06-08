@@ -14,6 +14,7 @@ import AdminView from "./pages/AdminView";
 import AdminRoute from "./components/routes/AdminRoute";
 import Services from "./pages/Services";
 import Contact from "./pages/Contact";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/turnos" element={<FormPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register></Register>} />
+            <Route path="/profile" element={<Profile />}></Route>
             <Route
               path="/admin"
               element={

@@ -1,5 +1,11 @@
 import { User } from "../models/users.js";
 import { Op } from "sequelize";
+import {
+  validateEmail,
+  validatePassword,
+  validateString,
+} from "../helpers/validations.js";
+import bcrypt from "bcrypt";
 
 export const findUsers = async (req, res) => {
   const users = await User.findAll();
@@ -28,18 +34,47 @@ export const CreateUser = async (req, res) => {
   res.json(user);
 };
 
-export const UpdateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
   const { id } = req.params;
-  const { name, email, password, role } = req.body;
+  const { name, email, password } = req.body;
 
-  const user = await User.findByPk(id);
+  try {
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
 
-  if (!user) {
-    return res.status(404).send({ message: "User not found" });
+    // Validaciones
+    if (!validateString(name)) {
+      return res.status(400).json({ message: "Nombre inválido" });
+    }
+
+    if (!validateEmail(email)) {
+      return res.status(400).json({ message: "Email inválido" });
+    }
+
+    if (password && !validatePassword(password)) {
+      return res.status(400).json({ message: "Contraseña inválida" });
+    }
+
+    // Actualización de datos
+    user.name = name;
+    user.email = email;
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+    }
+
+    await user.save();
+
+    // Elimina el campo `password` del JSON antes de enviarlo
+    const { password: _, ...userData } = user.toJSON();
+    return res.json({ message: "Usuario actualizado", user: userData });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Error al actualizar el usuario" });
   }
-
-  await user.update({ name, email, password, role });
-  res.json(user);
 };
 
 export const DeleteUser = async (req, res) => {

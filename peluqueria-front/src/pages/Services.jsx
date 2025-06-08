@@ -5,31 +5,31 @@ const services = [
     name: "Corte",
     description: "Corte clásico o moderno adaptado a tu estilo.",
     price: "$4.500",
-    image: "../../public/service-img-1.png",
+    image: "/service-img-1.png",
   },
   {
     name: "Corte y barba",
     description: "Look completo con corte de cabello y perfilado de barba.",
     price: "$6.500",
-    image: "../../public/service-img-2.png",
+    image: "/service-img-2.png",
   },
   {
     name: "Peinado",
     description: "Peinados para eventos o el día a día.",
     price: "$3.000",
-    image: "../../public/service-img-3.png",
+    image: "/service-img-3.png",
   },
   {
     name: "Coloración",
     description: "Color vibrante y duradero, incluye asesoramiento.",
     price: "$8.000",
-    image: "../../public/service-img-4.png",
+    image: "/service-img-4.png",
   },
   {
     name: "Barba",
     description: "Afeitado, perfilado y cuidado con productos de calidad.",
     price: "$2.500",
-    image: "../../public/service-img-5.png",
+    image: "/service-img-5.png",
   },
 ];
 
