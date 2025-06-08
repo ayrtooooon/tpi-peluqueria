@@ -4,10 +4,13 @@ import {
   successToast,
   errorToast,
 } from "../components/ui/toast/NotificationToast";
+import ConfirmAdminModal from "../components/ConfirmAdminModal";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [showAdminModal, setShowAdminModal] = useState(false);
 
   const fetchUsers = async () => {
     try {
@@ -29,13 +32,13 @@ const ManageUsers = () => {
         body: JSON.stringify({ role: "barber" }),
       });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Error al asignar el rol");
-      }
+      if (!res.ok)
+        throw new Error(
+          (await res.json()).message || "Error al asignar el rol"
+        );
 
       successToast("Rol asignado correctamente.");
-      fetchUsers(); // Refresh the list
+      fetchUsers();
     } catch (err) {
       errorToast(err.message || "Hubo un problema.");
     }
@@ -52,15 +55,40 @@ const ManageUsers = () => {
         }
       );
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Error al revertir el rol");
-      }
+      if (!res.ok)
+        throw new Error(
+          (await res.json()).message || "Error al revertir el rol"
+        );
 
       successToast("Rol revertido correctamente.");
-      fetchUsers(); // Refresh the list
+      fetchUsers();
     } catch (err) {
       errorToast(err.message || "Hubo un problema.");
+    }
+  };
+
+  const handleConfirmAdmin = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:3000/users/${selectedUserId}/admin`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ role: "admin" }),
+        }
+      );
+
+      if (!res.ok)
+        throw new Error(
+          (await res.json()).message || "Error al asignar el rol admin"
+        );
+
+      successToast("Rol admin asignado correctamente.");
+      setShowAdminModal(false);
+      setSelectedUserId(null);
+      fetchUsers();
+    } catch (err) {
+      errorToast(err.message || "No se pudo asignar el rol.");
     }
   };
 
@@ -96,6 +124,7 @@ const ManageUsers = () => {
                 >
                   Asignar rol barber
                 </Button>
+
                 <Button
                   variant="danger"
                   size="sm"
@@ -104,11 +133,29 @@ const ManageUsers = () => {
                 >
                   Revertir a cliente
                 </Button>
+
+                <Button
+                  variant="warning"
+                  size="sm"
+                  className="ms-2"
+                  onClick={() => {
+                    setSelectedUserId(user.user_id);
+                    setShowAdminModal(true);
+                  }}
+                >
+                  Asignar rol admin
+                </Button>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
+
+      <ConfirmAdminModal
+        show={showAdminModal}
+        handleClose={() => setShowAdminModal(false)}
+        handleConfirm={handleConfirmAdmin}
+      />
     </div>
   );
 };

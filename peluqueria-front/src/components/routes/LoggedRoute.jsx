@@ -6,7 +6,7 @@ const LoggedRoute = ({ children }) => {
   const { user, isLoggedIn } = useContext(AuthenticationContext);
 
   if (!isLoggedIn) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return children;
