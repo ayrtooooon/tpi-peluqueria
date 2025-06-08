@@ -103,9 +103,15 @@ const Register = () => {
               />
               {errors.password && <p>El password es requerido.</p>}
             </FormGroup>
-            <div className="d-flex justify-content-center">
-              <Button variant="secondary" type="submit">
+            <div className="d-flex justify-content-center mb-3">
+              <Button variant="primary" type="submit" className="me-2">
                 Registrarse
+              </Button>
+            </div>
+            <div className="text-center">
+              <p>¿Ya tienes una cuenta?</p>
+              <Button variant="secondary" onClick={() => navigate("/login")}>
+                Iniciar sesión
               </Button>
             </div>
           </Form>
