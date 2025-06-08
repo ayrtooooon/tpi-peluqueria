@@ -82,11 +82,11 @@ export const DeleteUser = async (req, res) => {
   const user = await User.findByPk(id);
 
   if (!user) {
-    return res.status(404).send({ message: "User not found" });
+    return res.status(404).send({ message: "Usuario no encontrado" });
   }
 
   await user.destroy();
-  res.send({ message: "User deleted" });
+  return res.status(200).json({ message: "Usuario eliminado" });
 };
 
 export const assignBarberRole = async (req, res) => {

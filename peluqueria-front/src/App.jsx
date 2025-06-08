@@ -15,6 +15,8 @@ import AdminRoute from "./components/routes/AdminRoute";
 import Services from "./pages/Services";
 import Contact from "./pages/Contact";
 import Profile from "./pages/Profile";
+import LoggedRoute from "./components/routes/LoggedRoute";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -24,10 +26,19 @@ function App() {
         <main className="flex-grow-1">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/turnos" element={<FormPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register></Register>} />
-            <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/services" element={<Services />}></Route>
+            <Route path="/turnos" element={<FormPage />} />
+            <Route
+              path="/profile"
+              element={
+                <LoggedRoute>
+                  <Profile />
+                </LoggedRoute>
+              }
+            ></Route>
             <Route
               path="/admin"
               element={
@@ -36,9 +47,8 @@ function App() {
                 </AdminRoute>
               }
             />
-            <Route path="/contact" element={<Contact />} />
             <Route path="/barbersView" element={<BarberView />} />
-            <Route path="/services" element={<Services />}></Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         <ToastContainer />
