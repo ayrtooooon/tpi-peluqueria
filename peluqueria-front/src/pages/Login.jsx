@@ -53,7 +53,14 @@ const Login = () => {
       const userData = await res.json();
       handleUserLogin(userData);
       successToast("Inicio de sesión exitoso.");
-      navigate("/turnos");
+      console.log(userData.role);
+      if (userData.role === "Admin") {
+        navigate("/admin");
+      } else if (userData.role === "Barber") {
+        navigate("/barbersView");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       errorToast(err.message);
     }
