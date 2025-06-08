@@ -1,101 +1,83 @@
-import { useEffect, useState } from "react";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
-import {
-    successToast,
-    errorToast,
-} from "../components/ui/toast/NotificationToast";
+import { useEffect, useState, useContext } from "react";
+import { Button, Table } from "react-bootstrap";
+import { successToast, errorToast } from "../components/ui/toast/NotificationToast";
+import { AuthenticationContext } from "../components/services/auth.context";
 
 const BarberView = () => {
-    const [turnos, setTurnos] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const [appointments, setAppointments] = useState([]);
+  const { user } = useContext(AuthenticationContext);
 
-    const fetchTurnosNoAsignados = async () => {
+  const fetchAppointments = async () => {
+  try {
+    const res = await fetch("http://localhost:3000/appointments");
+    if (!res.ok) throw new Error("Error al obtener turnos");
+    const data = await res.json();
+    setAppointments(data);
+  } catch (err) {
+    errorToast(err.message);
+  }
+};
+
+
+  const handleTakeAppointment = async (appointmentId) => {
+    console.log("Usuario logueado:", user); // Verificamos qué viene
     try {
-        const res = await fetch("http://localhost:3000/appointments?unassigned=true");
-        const data = await res.json();
-        setTurnos(data);
+      const res = await fetch(`http://localhost:3000/appointments/${appointmentId}/assign`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ barber_id: user.user_id }),
+      });
+      if (!res.ok) throw new Error("Error al tomar el turno");
+      successToast("Turno asignado correctamente");
+      fetchAppointments();
     } catch (err) {
-        errorToast("Error al obtener los turnos.");
-    } finally {
-        setLoading(false);
+      errorToast(err.message);
     }
-    };
+  };
 
-    const handleAsignarTurno = async (turnoId) => {
-    const barberId = localStorage.getItem("user_id");
+  useEffect(() => {
+    fetchAppointments();
+  }, []);
 
-        if (!barberId) {
-        errorToast("No se pudo identificar al barbero.");
-        return;
-        }
+  return (
+    <div className="container mt-5">
+      <h3>Turnos disponibles</h3>
+      <Table striped bordered hover>
+        <thead>
+  <tr>
+    <th>ID Cliente</th>
+    <th>Servicio</th>
+    <th>Fecha</th>
+    <th>Hora</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+  </tr>
+</thead>
+<tbody>
+  {appointments.map((appt) => (
+    <tr key={appt.appointment_id}>
+      <td>{appt.customer_id}</td>
+      <td>{appt.service}</td>
+      <td>{appt.appointment_date}</td>
+      <td>{appt.appointment_time}</td>
+      <td>{appt.status}</td>
+      <td>
+        <Button
+          variant="primary"
+          size="sm"
+          onClick={() => handleTakeAppointment(appt.appointment_id)}
+          disabled={appt.barber_id !== null || appt.status !== "Pendiente"}
+        >
+          Tomar turno
+        </Button>
+      </td>
+    </tr>
+  ))}
+</tbody>
 
-        try {
-        const res = await fetch(`http://localhost:3000/appointments/${turnoId}/assign`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ barber_id: barberId }),
-        });
-
-        if (!res.ok) {
-            const data = await res.json();
-            throw new Error(data.message || "Error al asignar turno");
-        }
-
-        successToast("Turno asignado correctamente.");
-        setTurnos((prev) => prev.filter((t) => t.id !== turnoId));
-        } catch (err) {
-        errorToast(err.message || "Error al asignar el turno.");
-        }
-    };
-
-    useEffect(() => {
-        fetchTurnosNoAsignados();
-    }, []);
-
-    console.log(turnos)
-
-    if (loading) {
-        return <p className="text-center mt-5">Cargando turnos...</p>;
-    }
-
-    return (
-        <Container className="mt-5">
-        <Card className="p-4 shadow">
-            <Card.Body>
-            <h3 className="mb-4">Turnos sin asignar</h3>
-            <p className="mb-4">Seleccioná los turnos que vas a atender:</p>
-
-            {turnos.length === 0 ? (
-                <p className="text-muted">No hay turnos pendientes para asignar.</p>
-            ) : (
-                <Row className="g-4">
-                {turnos.map((turno) => (
-                <Col md={4} key={turno.id}>
-                    <Card className="h-100 shadow-sm">
-                    <Card.Body>
-                        <Card.Title className="mb-3">
-                        Cliente ID: {turno.customer_id}
-                        </Card.Title>
-                        <Card.Text>
-                        <strong>Servicio:</strong> {turno.service}<br />
-                            <strong>Fecha:</strong> {turno.appointment_date}<br />
-                            <strong>Hora:</strong> {turno.appointment_time}
-                        </Card.Text>
-                        <div className="d-flex justify-content-end">
-                    <Button onClick={() => handleAsignarTurno(turno.id)}>
-                            Atender cliente
-                            </Button>
-                        </div>
-                    </Card.Body>
-                </Card>
-                </Col>
-                ))}
-            </Row>
-            )}
-        </Card.Body>
-    </Card>
-    </Container>
-    );
+      </Table>
+    </div>
+  );
 };
 
 export default BarberView;

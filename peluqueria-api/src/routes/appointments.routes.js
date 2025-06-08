@@ -5,14 +5,22 @@ import {
   createAppointment,
   updateAppointment,
   deleteAppointment,
+  assignAppoinment,
 } from "../services/appointments.services.js";
 
 const router = Router();
 
-router.get("/appointments", findAppointments);
+router.get("/appointments", (req, res) => {
+  if (req.query.unassigned === "true") {
+    return findUnassignedAppointments(req, res);
+  }
+  return findAppointments(req, res);
+});
+
 router.get("/appointments/:id", findAppointmentById);
 router.post("/appointments", createAppointment);
 router.put("/appointments/:id", updateAppointment);
 router.delete("/appointments/:id", deleteAppointment);
+router.put("/appointments/:id/assign", assignAppoinment);
 
 export default router;
