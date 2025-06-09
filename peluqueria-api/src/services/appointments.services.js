@@ -139,3 +139,22 @@ export const cancelAppointment = async (req, res) => {
 
   res.json({ message: "Turno cancelado" });
 };
+
+export const findAppointmentsByCustomer = async (req, res) => {
+  const { customer_id } = req.params;
+
+  if (!customer_id) {
+    return res.status(400).json({ message: "Falta el ID del cliente" });
+  }
+
+  try {
+    const appointments = await Appointment.findAll({
+      where: { customer_id },
+    });
+
+    res.json(appointments);
+  } catch (error) {
+    console.error("Error al obtener turnos del cliente:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};

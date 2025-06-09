@@ -24,7 +24,7 @@ const CostumerView = () => {
     }
     try {
       const res = await fetch(
-        `http://localhost:3000/appointments?customer_id=${user.user_id}`
+        `http://localhost:3000/appointments/customer/${user.user_id}`
       );
       const data = await res.json();
       setTurnos(data);
@@ -149,7 +149,7 @@ const CostumerView = () => {
           ) : (
             <Row className="g-4">
               {turnos.map((turno) => (
-                <Col md={4} key={turno.id}>
+                <Col md={4} key={turno.appointment_id}>
                   <Card className="h-100 shadow-sm">
                     <Card.Body>
                       <Card.Title className="mb-3">
