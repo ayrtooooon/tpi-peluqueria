@@ -41,7 +41,8 @@ const CostumerView = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user?.user_id || !user?.name) {
+
+    if (!user?.user_id) {
       errorToast("No se pudo identificar al cliente.");
       return;
     }
@@ -50,12 +51,14 @@ const CostumerView = () => {
       errorToast("No podés reservar para días pasados.");
       return;
     }
+
     if (isClosedDay(form.appointment_date)) {
       errorToast("La peluquería está cerrada los domingos.");
       return;
     }
+
     if (!isValidHour(form.appointment_time)) {
-      errorToast("El horario debe ser entre 10:00 y 19:00.");
+      errorToast("La hora debe estar entre las 08:00 y las 20:00.");
       return;
     }
 
@@ -66,7 +69,7 @@ const CostumerView = () => {
         body: JSON.stringify({
           ...form,
           customer_id: user.user_id,
-          customer_name: user.name,
+          customer_name: user.name || user.username || "Nombre no disponible",
         }),
       });
 
@@ -76,7 +79,11 @@ const CostumerView = () => {
       }
 
       successToast("Turno creado correctamente.");
-      setForm({ service: "", appointment_date: "", appointment_time: "" });
+      setForm({
+        service: "",
+        appointment_date: "",
+        appointment_time: "",
+      });
       fetchTurnosCliente();
     } catch (err) {
       errorToast(err.message || "Error al crear el turno.");
@@ -86,6 +93,17 @@ const CostumerView = () => {
   useEffect(() => {
     fetchTurnosCliente();
   }, [user]);
+
+  // Genera las opciones de horario cada 30 min desde las 08:00 hasta las 20:00
+  const generarOpcionesHora = () => {
+    const opciones = [];
+    for (let h = 8; h <= 20; h++) {
+      const horaStr = h.toString().padStart(2, "0");
+      opciones.push(`${horaStr}:00`);
+      if (h < 20) opciones.push(`${horaStr}:30`);
+    }
+    return opciones;
+  };
 
   if (loading) {
     return <p className="text-center mt-5">Cargando tus turnos...</p>;
@@ -97,7 +115,7 @@ const CostumerView = () => {
         <Card.Body>
           <h4 className="mb-3">Reservar nuevo turno</h4>
           <Form onSubmit={handleSubmit}>
-            <Row className="g-2">
+            <Row className="g-2 mb-3">
               <Col md={4}>
                 <Form.Select
                   name="service"
@@ -123,13 +141,19 @@ const CostumerView = () => {
                 />
               </Col>
               <Col md={3}>
-                <Form.Control
-                  type="time"
+                <Form.Select
                   name="appointment_time"
                   value={form.appointment_time}
                   onChange={handleChange}
                   required
-                />
+                >
+                  <option value="">Seleccionar hora</option>
+                  {generarOpcionesHora().map((hora, idx) => (
+                    <option key={idx} value={hora}>
+                      {hora}
+                    </option>
+                  ))}
+                </Form.Select>
               </Col>
               <Col md={2}>
                 <Button type="submit" variant="primary" className="w-100">
@@ -174,7 +198,7 @@ const CostumerView = () => {
   );
 };
 
-// --- Validaciones ---
+// Validaciones auxiliares
 function isPastDate(dateStr) {
   const hoy = new Date();
   const fecha = new Date(dateStr);
@@ -185,12 +209,12 @@ function isPastDate(dateStr) {
 
 function isClosedDay(dateStr) {
   const fecha = new Date(dateStr);
-  return fecha.getDay() === 6; // Domingo
+  return fecha.getDay() === 0; // Domingo
 }
 
 function isValidHour(timeStr) {
   const [hora, minutos] = timeStr.split(":").map(Number);
-  return hora >= 10 && (hora < 19 || (hora === 19 && minutos === 0));
+  return hora >= 8 && (hora < 20 || (hora === 20 && minutos === 0));
 }
 
 export default CostumerView;
