@@ -7,6 +7,7 @@ import {
   deleteAppointment,
   assignAppoinment,
   cancelAppointment,
+  findAppointmentsByCustomer,
 } from "../services/appointments.services.js";
 
 const router = Router();
@@ -24,5 +25,5 @@ router.put("/appointments/:id", updateAppointment);
 router.delete("/appointments/:id", deleteAppointment);
 router.put("/appointments/:id/assign", assignAppoinment);
 router.put("/appointments/:id/cancel", cancelAppointment);
-
+router.get("/appointments/customer/:customer_id", findAppointmentsByCustomer);
 export default router;
