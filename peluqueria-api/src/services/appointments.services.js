@@ -140,6 +140,21 @@ export const cancelAppointment = async (req, res) => {
   res.json({ message: "Turno cancelado" });
 };
 
+export const customerCancelAppointment = async (req, res) => {
+  const { id } = req.params;
+  const appointment = await Appointment.findByPk(id);
+
+  if (!appointment) {
+    return res.status(404).json({ message: "Turno no encontrado" });
+  }
+
+  appointment.status = "cancelado";
+  appointment.barber_id = null;
+  await appointment.save();
+
+  res.json({ message: "Turno cancelado correctamente" });
+};
+
 export const findAppointmentsByCustomer = async (req, res) => {
   const { customer_id } = req.params;
 
