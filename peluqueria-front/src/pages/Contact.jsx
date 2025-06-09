@@ -21,9 +21,7 @@ const Contact = () => {
               <Card.Text>
                 <strong>🕘 Horarios:</strong>
                 <br />
-                Lunes a Viernes: 10:00 - 19:00
-                <br />
-                Sábados: 10:00 - 15:00
+                Lunes a Sabados: 10:00 - 19:00
               </Card.Text>
             </Card.Body>
           </Card>
