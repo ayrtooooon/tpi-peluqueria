@@ -31,7 +31,6 @@ export const createAppointment = async (req, res) => {
       customer_name,
     } = req.body;
 
-    // Log para depuración
     console.log("Datos recibidos:", req.body);
 
     if (!appointment_date || !appointment_time || !service) {

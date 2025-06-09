@@ -12,7 +12,6 @@ const ManageUsers = () => {
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [showAdminModal, setShowAdminModal] = useState(false);
 
-  // Nuevo estado para appointments
   const [appointments, setAppointments] = useState([]);
   const [loadingAppointments, setLoadingAppointments] = useState(true);
 
@@ -28,7 +27,6 @@ const ManageUsers = () => {
     }
   };
 
-  // Nuevo fetch para appointments
   const fetchAppointments = async () => {
     try {
       setLoadingAppointments(true);
@@ -112,7 +110,7 @@ const ManageUsers = () => {
 
   useEffect(() => {
     fetchUsers();
-    fetchAppointments(); // Traer appointments cuando monta
+    fetchAppointments(); 
   }, []);
 
   if (loading) return <p>Cargando usuarios...</p>;

@@ -11,9 +11,9 @@ import { useNavigate } from "react-router-dom";
 const Profile = () => {
   const { user, handleUserLogin, handleUserLogout } = useContext(
     AuthenticationContext
-  ); // ¡Ojo! agregamos handleUserLogout
+  ); 
   const [editMode, setEditMode] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // ✅ estado para el modal
+  const [showDeleteModal, setShowDeleteModal] = useState(false); 
   const [formData, setFormData] = useState({
     name: user?.name || "",
     email: user?.email || "",
@@ -66,7 +66,6 @@ const Profile = () => {
 
   return (
     <>
-      {/* ✅ Modal de confirmación */}
       <ConfirmDeleteModal
         show={showDeleteModal}
         handleClose={() => setShowDeleteModal(false)}

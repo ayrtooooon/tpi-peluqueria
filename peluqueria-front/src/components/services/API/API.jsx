@@ -1,6 +1,5 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-// Esta funcion usenla para reemplazar a todos los fetch - Ayrton
 export async function fetchApi(
   endpoint,
   method = "GET",
