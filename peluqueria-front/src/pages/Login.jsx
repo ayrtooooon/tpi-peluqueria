@@ -67,10 +67,6 @@ const Login = () => {
     }
   };
 
-  const handleNavigateToRegister = () => {
-    navigate("/register");
-  };
-
   return (
     <div
       className="d-flex justify-content-center align-items-start w-100"

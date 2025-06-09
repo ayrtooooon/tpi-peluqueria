@@ -8,7 +8,7 @@ function Footer() {
         <Row className="align-items-center">
           <Col md={6} className="text-center text-md-start">
             <p className="mb-0">
-              &copy; 2025 Peluquería. Todos los derechos reservados.
+              &copy; 2025 HairSync. Todos los derechos reservados.
             </p>
           </Col>
           <Col md={6} className="text-center text-md-end">

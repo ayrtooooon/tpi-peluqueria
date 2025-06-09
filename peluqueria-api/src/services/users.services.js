@@ -1,5 +1,4 @@
-import { User } from "../models/users.js";
-import { Op } from "sequelize";
+import { User } from "../models/Users.js";
 import {
   validateEmail,
   validatePassword,
@@ -44,7 +43,6 @@ export const updateUser = async (req, res) => {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
-    // Validaciones
     if (!validateString(name)) {
       return res.status(400).json({ message: "Nombre inválido" });
     }
@@ -57,7 +55,6 @@ export const updateUser = async (req, res) => {
       return res.status(400).json({ message: "Contraseña inválida" });
     }
 
-    // Actualización de datos
     user.name = name;
     user.email = email;
 
@@ -68,7 +65,6 @@ export const updateUser = async (req, res) => {
 
     await user.save();
 
-    // Elimina el campo `password` del JSON antes de enviarlo
     const { password: _, ...userData } = user.toJSON();
     return res.json({ message: "Usuario actualizado", user: userData });
   } catch (err) {

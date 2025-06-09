@@ -56,13 +56,11 @@ export const Appointment = sequelize.define(
 );
 
 Appointment.associate = (models) => {
-  // Relación con el cliente
   Appointment.belongsTo(models.User, {
     foreignKey: "customer_id",
     as: "customer",
   });
 
-  // Relación con el barbero
   Appointment.belongsTo(models.User, {
     foreignKey: "barber_id",
     as: "barber",

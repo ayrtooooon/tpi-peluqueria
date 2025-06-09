@@ -32,7 +32,7 @@ function isPastDate(dateStr) {
 
 function isClosedDay(dateStr) {
   const fecha = new Date(dateStr);
-  const dia = fecha.getDay(); // 0=Domingo
+  const dia = fecha.getDay(); 
   return dia === 0;
 }
 

@@ -39,7 +39,7 @@ export const hasConflictingAppointment = async (barber_id, date, time) => {
     },
   });
 
-  return !!conflictingAppointment; // Devuelve true si existe
+  return !!conflictingAppointment; 
 };
 
 export function isPastDate(dateStr) {
@@ -52,7 +52,7 @@ export function isPastDate(dateStr) {
 
 export function isClosedDay(dateStr) {
   const fecha = new Date(dateStr);
-  const dia = fecha.getDay(); // 0=Domingo
+  const dia = fecha.getDay(); 
   return dia === 0;
 }
 

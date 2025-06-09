@@ -15,7 +15,6 @@ const app = express();
 try {
   app.use(express.json());
 
-  // Middleware manual para CORS
   app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "*");
@@ -24,7 +23,7 @@ try {
       "GET, POST, PUT, DELETE, OPTIONS"
     );
     if (req.method === "OPTIONS") {
-      return res.sendStatus(200); // ← Esto es CLAVE para evitar el error
+      return res.sendStatus(200); 
     }
     next();
   });

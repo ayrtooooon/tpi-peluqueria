@@ -16,7 +16,6 @@ const CostumerView = () => {
     appointment_time: "",
   });
 
-  // Defino hoy y un mes después en formato yyyy-mm-dd para el input date
   const today = new Date();
   const minDate = today.toISOString().split("T")[0];
 
@@ -63,8 +62,18 @@ const CostumerView = () => {
   };
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const { name, value } = e.target;
+
+  if (name === "appointment_date") {
+    const dia = new Date(value).getDay();
+    if (dia === 0) {
+      errorToast("No podés reservar un turno un domingo. El local está cerrado.");
+      return; 
+    }
+  }
+
+  setForm({ ...form, [name]: value });
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -90,7 +99,7 @@ const CostumerView = () => {
     }
 
     if (!isValidHour(form.appointment_time)) {
-      errorToast("La hora debe estar entre las 08:00 y las 20:00.");
+      errorToast("La hora debe estar entre las 08:00 y las 19:00.");
       return;
     }
 
@@ -126,13 +135,12 @@ const CostumerView = () => {
     fetchTurnosCliente();
   }, [user]);
 
-  // Genera las opciones de horario cada 30 min desde las 08:00 hasta las 20:00
   const generarOpcionesHora = () => {
     const opciones = [];
-    for (let h = 8; h <= 20; h++) {
+    for (let h = 8; h <= 19; h++) {
       const horaStr = h.toString().padStart(2, "0");
       opciones.push(`${horaStr}:00`);
-      if (h < 20) opciones.push(`${horaStr}:30`);
+      if (h < 19) opciones.push(`${horaStr}:30`);
     }
     return opciones;
   };
@@ -241,7 +249,6 @@ const CostumerView = () => {
   );
 };
 
-// Validaciones auxiliares
 function isPastDate(dateStr) {
   const hoy = new Date();
   const fecha = new Date(dateStr);
@@ -264,8 +271,9 @@ function isWithinOneMonth(dateStr) {
 
 function isClosedDay(dateStr) {
   const fecha = new Date(dateStr);
-  return fecha.getDay() === 0; // Domingo
+  return fecha.getDay() === 6; 
 }
+
 
 function isValidHour(timeStr) {
   const [hora, minutos] = timeStr.split(":").map(Number);
