@@ -151,7 +151,7 @@ export const customerCancelAppointment = async (req, res) => {
     return res.status(404).json({ message: "Turno no encontrado" });
   }
 
-  appointment.status = "cancelado";
+  appointment.status = "Cancelado";
   appointment.barber_id = null;
   await appointment.save();
 

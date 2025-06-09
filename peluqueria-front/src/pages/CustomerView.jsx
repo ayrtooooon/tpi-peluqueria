@@ -62,18 +62,20 @@ const CostumerView = () => {
   };
 
   const handleChange = (e) => {
-  const { name, value } = e.target;
+    const { name, value } = e.target;
 
-  if (name === "appointment_date") {
-    const dia = new Date(value).getDay();
-    if (dia === 0) {
-      errorToast("No podés reservar un turno un domingo. El local está cerrado.");
-      return; 
+    if (name === "appointment_date") {
+      const dia = new Date(value).getDay();
+      if (dia === 0) {
+        errorToast(
+          "No podés reservar un turno un domingo. El local está cerrado."
+        );
+        return;
+      }
     }
-  }
 
-  setForm({ ...form, [name]: value });
-};
+    setForm({ ...form, [name]: value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -149,7 +151,9 @@ const CostumerView = () => {
     return <p className="text-center mt-5">Cargando tus turnos...</p>;
   }
 
-  const turnosVisibles = turnos.filter((turno) => turno.status !== "cancelado");
+  const turnosVisibles = turnos.filter(
+    (turno) => turno.status !== "Cancelado" && turno.status !== "Terminado"
+  );
 
   return (
     <Container className="mt-5">
@@ -271,9 +275,8 @@ function isWithinOneMonth(dateStr) {
 
 function isClosedDay(dateStr) {
   const fecha = new Date(dateStr);
-  return fecha.getDay() === 6; 
+  return fecha.getDay() === 6;
 }
-
 
 function isValidHour(timeStr) {
   const [hora, minutos] = timeStr.split(":").map(Number);
