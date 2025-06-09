@@ -51,7 +51,7 @@ const Home = () => {
       <div className="bg-light p-5 rounded-lg m-3 text-center shadow">
         {!isLoggedIn ? (
           <>
-            <h1 className="display-4">Bienvenido a nuestra Peluquería</h1>
+            <h1 className="display-4">Bienvenido a HairSync</h1>
             <p className="lead">
               Servicios profesionales de belleza y cuidado capilar
             </p>
