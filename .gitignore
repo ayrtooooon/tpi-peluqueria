@@ -1,5 +1,5 @@
 node_modules
-Peluqueria-Dev
+users.db
 
 # Logs
 logs
@@ -24,3 +24,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+peluqueria-api/users.db

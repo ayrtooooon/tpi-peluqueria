@@ -2,14 +2,14 @@ import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { AuthenticationContext } from "../services/auth.context";
 
-const AdminRoute = ({ children }) => {
+const LoggedRoute = ({ children }) => {
   const { user, isLoggedIn } = useContext(AuthenticationContext);
 
-  if (!isLoggedIn || user.role !== "Admin") {
+  if (!isLoggedIn) {
     return <Navigate to="/" replace />;
   }
 
   return children;
 };
 
-export default AdminRoute;
+export default LoggedRoute;

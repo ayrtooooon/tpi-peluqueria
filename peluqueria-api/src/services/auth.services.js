@@ -34,9 +34,13 @@ export const registerUser = async (req, res) => {
     password: hashedPassword,
   });
 
-  res
-    .status(201)
-    .json({ id: newUser.id, message: "Usuario registrado correctamente" });
+  res.status(201).json({
+    user_id: newUser.user_id,
+    name: newUser.name,
+    email: newUser.email,
+    role: newUser.role,
+    message: "Usuario registrado correctamente",
+  });
 };
 
 export const loginUser = async (req, res) => {

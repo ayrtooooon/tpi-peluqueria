@@ -51,11 +51,10 @@ const Login = () => {
       }
 
       const userData = await res.json();
-      localStorage.setItem("user_id", userData.customer_id);
+      localStorage.setItem("user_id", userData.user_id);
       handleUserLogin(userData);
+      console.log(userData);
       successToast("Inicio de sesión exitoso.");
-      console.log(userData.role);
-      console.log(userData.id);
       if (userData.role === "Admin") {
         navigate("/admin");
       } else if (userData.role === "Barber") {
@@ -106,20 +105,17 @@ const Login = () => {
               />
               {errors.password && <p>El password es requerido.</p>}
             </FormGroup>
-            <Row className="mb-3">
-              <Col />
-              <Col md={6} className="d-flex justify-content-end">
-                <Button variant="secondary" type="submit">
-                  Iniciar sesión
-                </Button>
-              </Col>
-              <Col md={6} className="justify-content-center">
-                <p>¿Aún no tienes una cuenta?</p>
-                <Button variant="primary" onClick={handleNavigateToRegister}>
-                  Registrarse
-                </Button>
-              </Col>
-            </Row>
+            <div className="d-flex justify-content-center mb-3">
+              <Button variant="primary" type="submit" className="me-2">
+                Iniciar sesión
+              </Button>
+            </div>
+            <div className="text-center">
+              <p>¿Aún no tienes una cuenta?</p>
+              <Button variant="secondary" onClick={() => navigate("/register")}>
+                Regístrate
+              </Button>
+            </div>
           </Form>
         </Card.Body>
       </Card>

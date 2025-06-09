@@ -16,7 +16,7 @@ const Home = () => {
           <Button
             variant="success"
             size="lg"
-            onClick={() => navigate("/turnos")}
+            onClick={() => navigate("/appointments")}
           >
             Sacar turno
           </Button>
