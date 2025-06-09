@@ -35,6 +35,25 @@ const CostumerView = () => {
     }
   };
 
+  const cancelarTurno = async (appointment_id) => {
+    try {
+      const res = await fetch(
+        `http://localhost:3000/appointments/${appointment_id}/customer-cancel`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (!res.ok) {
+        throw new Error("No se pudo cancelar el turno.");
+      }
+      successToast("Turno cancelado correctamente.");
+      fetchTurnosCliente();
+    } catch (err) {
+      errorToast(err.message || "Error al cancelar el turno.");
+    }
+  };
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -91,6 +110,8 @@ const CostumerView = () => {
     return <p className="text-center mt-5">Cargando tus turnos...</p>;
   }
 
+  const turnosVisibles = turnos.filter((turno) => turno.status !== "cancelado");
+
   return (
     <Container className="mt-5">
       <Card className="p-4 shadow mb-4">
@@ -144,11 +165,11 @@ const CostumerView = () => {
       <Card className="p-4 shadow">
         <Card.Body>
           <h3 className="mb-4">Mis turnos</h3>
-          {turnos.length === 0 ? (
+          {turnosVisibles.length === 0 ? (
             <p className="text-muted">No tenés turnos reservados.</p>
           ) : (
             <Row className="g-4">
-              {turnos.map((turno) => (
+              {turnosVisibles.map((turno) => (
                 <Col md={4} key={turno.appointment_id}>
                   <Card className="h-100 shadow-sm">
                     <Card.Body>
@@ -162,6 +183,13 @@ const CostumerView = () => {
                         <br />
                         <strong>Estado:</strong> {turno.status || "Pendiente"}
                       </Card.Text>
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => cancelarTurno(turno.appointment_id)}
+                      >
+                        Cancelar
+                      </Button>
                     </Card.Body>
                   </Card>
                 </Col>
