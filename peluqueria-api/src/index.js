@@ -3,7 +3,7 @@ import express from "express";
 import { PORT } from "./config.js";
 import { sequelize } from "./db.js";
 
-import "./models/users.js";
+import "./models/Users.js";
 import "./models/appointments.js";
 
 import peluqueriaRoutes from "./routes/users.routes.js";

@@ -16,6 +16,14 @@ const CostumerView = () => {
     appointment_time: "",
   });
 
+  // Defino hoy y un mes después en formato yyyy-mm-dd para el input date
+  const today = new Date();
+  const minDate = today.toISOString().split("T")[0];
+
+  const maxDateObj = new Date(today);
+  maxDateObj.setMonth(maxDateObj.getMonth() + 1);
+  const maxDate = maxDateObj.toISOString().split("T")[0];
+
   const fetchTurnosCliente = async () => {
     if (!user?.user_id) {
       errorToast("No se pudo identificar al cliente.");
@@ -49,6 +57,11 @@ const CostumerView = () => {
 
     if (isPastDate(form.appointment_date)) {
       errorToast("No podés reservar para días pasados.");
+      return;
+    }
+
+    if (!isWithinOneMonth(form.appointment_date)) {
+      errorToast("Solo podés reservar turnos hasta 1 mes desde hoy.");
       return;
     }
 
@@ -137,6 +150,8 @@ const CostumerView = () => {
                   name="appointment_date"
                   value={form.appointment_date}
                   onChange={handleChange}
+                  min={minDate}
+                  max={maxDate}
                   required
                 />
               </Col>
@@ -205,6 +220,18 @@ function isPastDate(dateStr) {
   hoy.setHours(0, 0, 0, 0);
   fecha.setHours(0, 0, 0, 0);
   return fecha < hoy;
+}
+
+function isWithinOneMonth(dateStr) {
+  const hoy = new Date();
+  const fecha = new Date(dateStr);
+  hoy.setHours(0, 0, 0, 0);
+  fecha.setHours(0, 0, 0, 0);
+
+  const max = new Date(hoy);
+  max.setMonth(max.getMonth() + 1);
+
+  return fecha <= max;
 }
 
 function isClosedDay(dateStr) {
