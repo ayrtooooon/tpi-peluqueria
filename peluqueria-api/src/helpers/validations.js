@@ -1,4 +1,5 @@
 import { Appointment } from "../models/appointments.js";
+import { Op, fn, col, where, literal } from "sequelize";
 
 export const validateString = (str, minLength, maxLength) => {
   if (minLength && str.length < minLength) return false;
@@ -59,3 +60,31 @@ export function isValidHour(timeStr) {
   const [hora, minutos] = timeStr.split(":").map(Number);
   return hora >= 10 && (hora < 19 || (hora === 19 && minutos === 0));
 }
+
+export const actualizarEstadosTurnos = async () => {
+  const ahora = new Date().toISOString();
+
+  await Appointment.update(
+    { status: "Terminado" },
+    {
+      where: {
+        status: "Asignado",
+        [Op.and]: literal(
+          `datetime(appointment_date || ' ' || appointment_time) < '${ahora}'`
+        ),
+      },
+    }
+  );
+
+  await Appointment.update(
+    { status: "Cancelado" },
+    {
+      where: {
+        status: "Pendiente",
+        [Op.and]: literal(
+          `datetime(appointment_date || ' ' || appointment_time) < '${ahora}'`
+        ),
+      },
+    }
+  );
+};

@@ -12,6 +12,10 @@ const ManageUsers = () => {
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [showAdminModal, setShowAdminModal] = useState(false);
 
+  // Nuevo estado para appointments
+  const [appointments, setAppointments] = useState([]);
+  const [loadingAppointments, setLoadingAppointments] = useState(true);
+
   const fetchUsers = async () => {
     try {
       const res = await fetch("http://localhost:3000/users");
@@ -21,6 +25,20 @@ const ManageUsers = () => {
       errorToast(err.message || "Error al obtener los usuarios.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Nuevo fetch para appointments
+  const fetchAppointments = async () => {
+    try {
+      setLoadingAppointments(true);
+      const res = await fetch("http://localhost:3000/appointments");
+      const data = await res.json();
+      setAppointments(data);
+    } catch (err) {
+      errorToast(err.message || "Error al obtener los turnos.");
+    } finally {
+      setLoadingAppointments(false);
     }
   };
 
@@ -94,6 +112,7 @@ const ManageUsers = () => {
 
   useEffect(() => {
     fetchUsers();
+    fetchAppointments(); // Traer appointments cuando monta
   }, []);
 
   if (loading) return <p>Cargando usuarios...</p>;
@@ -156,6 +175,36 @@ const ManageUsers = () => {
         handleClose={() => setShowAdminModal(false)}
         handleConfirm={handleConfirmAdmin}
       />
+
+      <h3 className="mt-5">Historial de Turnos</h3>
+      {loadingAppointments ? (
+        <p>Cargando turnos...</p>
+      ) : (
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Estado</th>
+              <th>Usuario</th>
+              <th>Peluquero</th>
+            </tr>
+          </thead>
+          <tbody>
+            {appointments.map((appt) => (
+              <tr key={appt.appointment_id}>
+                <td>{appt.appointment_id}</td>
+                <td>{appt.appointment_date}</td>
+                <td>{appt.appointment_time}</td>
+                <td>{appt.status}</td>
+                <td>{appt.customer_name || appt.userId || appt.customer_id}</td>
+                <td>{appt.barber_name || appt.barberId || appt.barber_id}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
     </div>
   );
 };
