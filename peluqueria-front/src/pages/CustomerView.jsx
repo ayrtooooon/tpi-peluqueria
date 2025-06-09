@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import {
   successToast,
   errorToast,
 } from "../components/ui/toast/NotificationToast";
+import { AuthenticationContext } from "../components/services/auth.context";
 
 const CostumerView = () => {
   const [turnos, setTurnos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useContext(AuthenticationContext);
   const [form, setForm] = useState({
     service: "",
     appointment_date: "",
@@ -15,15 +17,14 @@ const CostumerView = () => {
   });
 
   const fetchTurnosCliente = async () => {
-    const clienteId = localStorage.getItem("user_id");
-    if (!clienteId) {
+    if (!user?.user_id) {
       errorToast("No se pudo identificar al cliente.");
       setLoading(false);
       return;
     }
     try {
       const res = await fetch(
-        `http://localhost:3000/appointments?customer_id=${clienteId}`
+        `http://localhost:3000/appointments?customer_id=${user.user_id}`
       );
       const data = await res.json();
       setTurnos(data);
@@ -40,8 +41,7 @@ const CostumerView = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const clienteId = localStorage.getItem("user_id");
-    if (!clienteId) {
+    if (!user?.user_id || !user?.name) {
       errorToast("No se pudo identificar al cliente.");
       return;
     }
@@ -58,19 +58,23 @@ const CostumerView = () => {
       errorToast("El horario debe ser entre 10:00 y 19:00.");
       return;
     }
+
     try {
       const res = await fetch("http://localhost:3000/appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          customer_id: clienteId,
+          customer_id: user.user_id,
+          customer_name: user.name,
         }),
       });
+
       if (!res.ok) {
         const data = await res.json();
         throw new Error(data.message || "Error al crear el turno");
       }
+
       successToast("Turno creado correctamente.");
       setForm({ service: "", appointment_date: "", appointment_time: "" });
       fetchTurnosCliente();
@@ -81,7 +85,7 @@ const CostumerView = () => {
 
   useEffect(() => {
     fetchTurnosCliente();
-  }, []);
+  }, [user]);
 
   if (loading) {
     return <p className="text-center mt-5">Cargando tus turnos...</p>;
@@ -136,6 +140,7 @@ const CostumerView = () => {
           </Form>
         </Card.Body>
       </Card>
+
       <Card className="p-4 shadow">
         <Card.Body>
           <h3 className="mb-4">Mis turnos</h3>
@@ -169,7 +174,7 @@ const CostumerView = () => {
   );
 };
 
-// --- Funciones de validación auxiliares ---
+// --- Validaciones ---
 function isPastDate(dateStr) {
   const hoy = new Date();
   const fecha = new Date(dateStr);
@@ -180,7 +185,7 @@ function isPastDate(dateStr) {
 
 function isClosedDay(dateStr) {
   const fecha = new Date(dateStr);
-  return fecha.getDay() === 0; // Domingo
+  return fecha.getDay() === 6; // Domingo
 }
 
 function isValidHour(timeStr) {

@@ -2,20 +2,7 @@ import { Appointment } from "../models/appointments.js";
 import { hasConflictingAppointment } from "../helpers/validations.js";
 
 export const findAppointments = async (req, res) => {
-  const where = {};
-  if (req.query.unassigned === "true") {
-    where.barber_id = null;
-  }
-  const appointments = await Appointment.findAll({
-    where,
-    include: [
-      {
-        model: User,
-        as: "customer",
-        attributes: ["name"],
-      },
-    ],
-  });
+  const appointments = await Appointment.findAll();
   res.json(appointments);
 };
 
@@ -24,8 +11,8 @@ export const findAppointmentById = async (req, res) => {
   const appointment = await Appointment.findByPk(id);
 
   if (!appointment) {
-  return res.status(404).send({ message: "Appointment not found" });
-}
+    return res.status(404).send({ message: "Appointment not found" });
+  }
 
   res.json(appointment);
 };
@@ -37,7 +24,7 @@ export const createAppointment = async (req, res) => {
       appointment_time,
       service,
       customer_id,
-      barber_id,
+      customer_name,
     } = req.body;
 
     // Log para depuración
@@ -52,7 +39,7 @@ export const createAppointment = async (req, res) => {
       appointment_time,
       service,
       customer_id,
-      barber_id,
+      customer_name,
     });
 
     res.json(newAppointment);
@@ -110,7 +97,9 @@ export const assignAppoinment = async (req, res) => {
   }
 
   if (appointment.barber_id !== null || appointment.status !== "Pendiente") {
-    return res.status(400).json({ message: "El turno ya está asignado o no está disponible" });
+    return res
+      .status(400)
+      .json({ message: "El turno ya está asignado o no está disponible" });
   }
 
   const conflict = await hasConflictingAppointment(
@@ -120,7 +109,9 @@ export const assignAppoinment = async (req, res) => {
   );
 
   if (conflict) {
-    return res.status(400).json({ message: "Ya tenés un turno asignado en ese horario" });
+    return res
+      .status(400)
+      .json({ message: "Ya tenés un turno asignado en ese horario" });
   }
 
   appointment.barber_id = barber_id;
