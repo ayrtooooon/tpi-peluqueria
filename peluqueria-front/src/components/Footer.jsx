@@ -5,16 +5,11 @@ function Footer() {
   return (
     <footer className="bg-light py-3 mt-4 border-top">
       <Container>
-        <Row className="align-items-center">
-          <Col md={6} className="text-center text-md-start">
-            <p className="mb-0">
+        <Row className="justify-content-center">
+          <Col xs="auto">
+            <p className="mb-0 text-center">
               &copy; 2025 HairSync. Todos los derechos reservados.
             </p>
-          </Col>
-          <Col md={6} className="text-center text-md-end">
-            <Link to="/" className="text-decoration-none me-3 text-dark">
-              Inicio
-            </Link>
           </Col>
         </Row>
       </Container>
