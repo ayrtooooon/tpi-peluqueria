@@ -1,4 +1,5 @@
 import { Appointment } from "../models/appointments.js";
+import { hasConflictingAppointment } from "../helpers/validations.js";
 
 export const findAppointments = async (req, res) => {
   const where = {};
@@ -22,9 +23,9 @@ export const findAppointmentById = async (req, res) => {
   const { id } = req.params;
   const appointment = await Appointment.findByPk(id);
 
-  if (!user) {
-    return res.status(404).send({ message: "User not found" });
-  }
+  if (!appointment) {
+  return res.status(404).send({ message: "Appointment not found" });
+}
 
   res.json(appointment);
 };
@@ -92,4 +93,58 @@ export const deleteAppointment = async (req, res) => {
 
   await appointment.destroy();
   res.send(`Appointment ${id} deleted`);
+};
+
+export const assignAppoinment = async (req, res) => {
+  const { id } = req.params;
+  const { barber_id } = req.body;
+
+  if (!barber_id) {
+    return res.status(400).json({ message: "ID del barbero faltante" });
+  }
+
+  const appointment = await Appointment.findByPk(id);
+
+  if (!appointment) {
+    return res.status(404).json({ message: "Turno no encontrado" });
+  }
+
+  if (appointment.barber_id !== null || appointment.status !== "Pendiente") {
+    return res.status(400).json({ message: "El turno ya está asignado o no está disponible" });
+  }
+
+  const conflict = await hasConflictingAppointment(
+    barber_id,
+    appointment.appointment_date,
+    appointment.appointment_time
+  );
+
+  if (conflict) {
+    return res.status(400).json({ message: "Ya tenés un turno asignado en ese horario" });
+  }
+
+  appointment.barber_id = barber_id;
+  appointment.status = "Asignado";
+  await appointment.save();
+
+  res.json({ message: "Turno asignado correctamente" });
+};
+
+export const cancelAppointment = async (req, res) => {
+  const { id } = req.params;
+  const appointment = await Appointment.findByPk(id);
+
+  if (!appointment) {
+    return res.status(404).json({ message: "Turno no encontrado" });
+  }
+
+  if (appointment.barber_id === null || appointment.status !== "Asignado") {
+    return res.status(400).json({ message: "El turno no está asignado" });
+  }
+
+  appointment.barber_id = null;
+  appointment.status = "Pendiente";
+  await appointment.save();
+
+  res.json({ message: "Turno cancelado" });
 };

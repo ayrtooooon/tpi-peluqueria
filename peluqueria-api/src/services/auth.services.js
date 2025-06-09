@@ -61,12 +61,14 @@ export const loginUser = async (req, res) => {
   if (!comparison)
     return res.status(401).send({ message: "Email y/o contraseña incorrecta" });
 
-  return res.status(200).json({
-    user_id: user.user_id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-  });
+  return res
+    .status(200)
+    .json({
+      user_id: user.user_id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    });
 };
 
 const validateLoginUser = (req) => {
